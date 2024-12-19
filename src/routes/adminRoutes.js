@@ -1,4 +1,12 @@
+const express = require('express');
+const User = require('../models/User');
+const Review = require('../models/Review');
+const router = express.Router();
+
+
 // Ruta para obtener estadísticas
+
+
 router.get("/statistics", async (req, res) => {
     try {
       const totalUsers = await User.countDocuments();
@@ -17,3 +25,4 @@ router.get("/statistics", async (req, res) => {
     }
   });
   
+  module.exports = router;
