@@ -7,33 +7,34 @@ const TMDB_API_KEY = process.env.TMDB_API_KEY; // Llave de la API de TMDB
 const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 
 // Crear una reseña asociada a un usuario
-router.post('/', async (req, res) => {
-  const { movieId, movieName, content, rating, userId } = req.body;
-
-  console.log('Datos recibidos en el backend:', req.body);
+router.post("/", async (req, res) => {
+  const { movieId, movieName, posterPath, content, rating, userId } = req.body;
 
   try {
-    if (!movieId || !movieName || !content || !rating || !userId) {
-      return res.status(400).json({ error: 'Todos los campos son requeridos.' });
+    // Buscar el usuario por su ID
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "Usuario no encontrado" });
     }
 
-    // Crear la reseña asociada al usuario
-    const review = new Review({
+    // Crear la reseña
+    const newReview = new Review({
       movieId,
       movieName,
+      posterPath,
       content,
       rating,
-      user: userId,
+      user: user._id, // Relación con el usuario
     });
 
-    await review.save();
-    res.status(201).json({ message: 'Reseña guardada con éxito', review });
+    // Guardar la reseña en la base de datos
+    await newReview.save();
+    res.status(201).json({ message: "Reseña creada con éxito", review: newReview });
   } catch (error) {
-    console.error('Error al guardar la reseña:', error);
-    res.status(500).json({ error: error.message });
+    console.error("Error al guardar la reseña:", error);
+    res.status(500).json({ message: "Error al guardar la reseña", error });
   }
 });
-
 
 // Obtener reseñas por película con información del usuario
 router.get('/:movieId', async (req, res) => {
