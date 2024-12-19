@@ -16,5 +16,6 @@ app.get('/', (req, res) => {
 // Rutas
 app.use('/movies', require('./routes/moviesRoutes'));
 app.use('/reviews', require('./routes/reviewsRoutes'));
-app.use('/users',require('./routes/userRoutes'))
+app.use('/users',require('./routes/userRoutes'));
+app.use('/admin', require('./routes/adminRoutes'));
 module.exports = app;
