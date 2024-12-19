@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+const mongoose = require('mongoose'); // Asegúrate de que esta línea esté presente
 
 const reviewSchema = new mongoose.Schema({
   movieId: {
@@ -13,6 +13,12 @@ const reviewSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  rating: { // Calificación de la reseña
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Referencia al modelo de usuario
@@ -25,3 +31,4 @@ const reviewSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Review', reviewSchema);
+
